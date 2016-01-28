@@ -1,2 +1,9 @@
 # ToolbarController
-A micro javascript framework to implement a simple toolbar, defining actions and associate them to buttons.
+A micro javascript framework to create a simple toolbar, and manage its actions, associating them to buttons.
+
+## Requirements
+---------
+- JQuery
+
+## Getting started
+---------
