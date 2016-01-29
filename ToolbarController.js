@@ -21,10 +21,16 @@ function Toolbar(name) {
 	this.name = name;
 	this.itemsSelected = [];
 
+	/*
+	* Add an item to the keeping track list
+	*/
 	this.addItem = function(value) {
 		this.itemsSelected.push(value);
 	};
 
+	/*
+	* Remove an item from the keeping track list
+	*/
 	this.removeItem = function(value) {
 		for(var i = 0; i < this.itemsSelected.length; i++) {
 			if (this.itemsSelected[i] == value)
@@ -33,7 +39,7 @@ function Toolbar(name) {
 	};
 
 	/*
-	* Execute an action of the toolbar
+	* Execute an action of the toolbar on the list items tracked
 	* @param action: an object with these properties: 
 	* 	string httpMethod
 	* 	string url
