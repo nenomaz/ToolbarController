@@ -17,7 +17,7 @@
     along with ToolbarController.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function Toolbar(name) {
+function ToolbarController(name) {
 	this.name = name;
 	this.itemsSelected = [];
 
