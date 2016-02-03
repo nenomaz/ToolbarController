@@ -33,6 +33,41 @@ Take the one of the simplest and common case: our elements are in a list, select
 ```
 In this case, when the element checkbox is clicked, we examine his status: if is checked, we add its value to the toolbar, else we remove it.
 
-#### Associate **actions** to toolbar buttons
+#### Execute actions
 
-For each of the button you want to make a submit with the selected elements, please invoke the MyToolbar.execute
+To execute a submit action, you have to invoke:
+```
+MyToolbar.execute({
+	httpMethod: 'post',
+	url: 'http://myactionurl',
+	ajax: false
+};
+```
+
+This statement will abstract you from an hidden form, which will be configured with the options you are giving and the list of selected elements as data to send.
+
+##### A brief example
+
+Define your actions in an object:
+```
+var myToolbarActions = {
+	action1: {
+		httpMethod: 'post',
+		url: 'http://action1-example',
+		ajax: false
+	},
+	action2: {
+		httpMethod: 'post',
+		url: 'http://action2-example',
+		ajax: false
+	},
+	...
+}
+```
+
+Attach an event listener (the one you want that will be the trigger) to buttons matching each of your action, for example:
+```
+<button onclick="if (confirm('Are you sure?')) MyToolbar.execute(myToolbarActions.action1);">Action1</button>
+<button onclick="if (confirm('Are you sure?')) MyToolbar.execute(myToolbarActions.action2);">Action2</button>
+...
+```
