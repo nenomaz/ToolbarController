@@ -37,6 +37,25 @@ function ToolbarController(name) {
 				this.itemsSelected.splice(i, 1);
 		}
 	};
+	
+	this.toggleItem = function(value) {
+		if (!this.hasItem(value)) {
+			this.addItem(value);
+		} else {
+			this.removeItem(value);
+		}
+	};
+
+	this.hasItem = function(value) {
+		var hasItem = false;
+		for(var i = 0; i < this.itemsSelected.length; i++) {
+			if (this.itemsSelected[i] == value) {
+				hasItem = true;
+				i = this.itemsSelected.length;
+			}
+		}
+		return hasItem;
+	};
 
 	/*
 	* Execute an action of the toolbar on the list items tracked
