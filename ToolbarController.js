@@ -66,21 +66,30 @@ function ToolbarController(name) {
 	*/
 	this.execute = function(action) {
 		if (!action.ajax) {
-			var form = jQuery("#" + this.name);
+			var form = this.getForm();
 			form.attr('method', action.httpMethod);
 			form.attr('action', action.url);
-			for (var i = 0; i < this.itemsSelected.length; i++) {
-				var hiddenField = '<input type="hidden" name="item[' + i + ']" value="' + this.itemsSelected[i] + '">';
-				form.append(hiddenField);
-			}
-			form.submit();
+			form.empty();
+			this.populateForm();
+			//form.submit();
 		}
 	};
+	
+	this.getForm = function() {
+		return jQuery("#" + this.name);
+	}
+	
+	this.populateForm = function() {
+		var form = this.getForm();
+		for (var i = 0; i < this.itemsSelected.length; i++) {
+			var hiddenField = '<input type="hidden" name="item[' + i + ']" value="' + this.itemsSelected[i] + '">';
+			form.append(hiddenField);
+		}
+	}
 
 	// This little snippet append a form to the body for non-Ajax actions
 	jQuery(function(){
 		var form = jQuery('<form id="' + name + '" style="display:none;">');
 		jQuery('body').append(form);
-
 	});
 };
