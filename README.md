@@ -71,3 +71,17 @@ Attach an event listener (the one you want that will be the trigger) to buttons 
 <button onclick="if (confirm('Are you sure?')) MyToolbar.execute(myToolbarActions.action2);">Action2</button>
 ...
 ```
+
+#### Customization
+
+##### Customize the manner or the format by which the form will be populated
+
+After you have initiated your MyToolbar object, simply override the populateForm() method with this sintax:
+```
+MyToolbar.populateForm = function() {
+	var form = this.getForm();
+	// Here your populating form manner, as you prefer
+	// Keep in mind that selected elements are available in the property: this.itemsSelected
+	
+}
+```
