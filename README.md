@@ -16,16 +16,14 @@ Include the script on your page, after JQuery:
 <script src="ToolbarController.js"></script>
 ```
 
-### Let's go
-
 Make sure you have placed your toolbar and elements in the DOM
 
-#### Init yout toolbar
+#### 1 - Init yout toolbar
 ```
 var MyToolbar = new ToolbarController('MyToolbar');
 ```
 
-#### Keep track of selected elements
+#### 2 - Keep track of selected elements
 
 Take the one of the simplest and common case: our elements are in a list, selectable by clicking on their checkbox, so we choose to distinguish them by their value, here are an example:
 ```
@@ -33,7 +31,7 @@ Take the one of the simplest and common case: our elements are in a list, select
 ```
 In this case, when the element checkbox is clicked, we examine his status: if is checked, we add its value to the toolbar, else we remove it.
 
-#### Execute actions
+#### 3 - Execute actions
 
 To execute a submit action, you have to invoke:
 ```
@@ -81,7 +79,9 @@ After you have initiated your MyToolbar object, simply override the populateForm
 MyToolbar.populateForm = function() {
 	var form = this.getForm();
 	// Here your populating form manner, as you prefer
-	// Keep in mind that selected elements are available in the property: this.itemsSelected
+	// Keep in mind that
+	// 	selected elements are available in the property: this.itemsSelected;
+	//	value returned from this.getForm() is the jQuery object of the form
 	
 }
 ```
