@@ -18,6 +18,9 @@
 */
 
 function ToolbarController(name) {
+	if (!name) {
+		throw 'ToolbarController: Name is empty';
+	}
 	this.name = name;
 	this.itemsSelected = [];
 
@@ -28,68 +31,90 @@ function ToolbarController(name) {
 	});
 };
 
-/*
-* Add an item to the keeping track list
-*/
-ToolbarController.prototype.addItem = function(value) {
-	this.itemsSelected.push(value);
-};
+/* ITEMS MANAGEMENT */
 
-/*
-* Remove an item from the keeping track list
-*/
-ToolbarController.prototype.removeItem = function(value) {
-	for(var i = 0; i < this.itemsSelected.length; i++) {
-		if (this.itemsSelected[i] == value)
-			this.itemsSelected.splice(i, 1);
-	}
-};
+	/*
+	* Add an item value to the keeping track list
+	* @value: must be a number or string
+	*/
+	ToolbarController.prototype.addItem = function(value) {
+		var type = typeof value;
+		if (type == 'number' || type == 'string')
+			this.itemsSelected.push(value);
+		else
+			throw 'ToolbarController: item value to be added must be a number or string';
+	};
 
-ToolbarController.prototype.toggleItem = function(value) {
-	if (!this.hasItem(value)) {
-		this.addItem(value);
-	} else {
-		this.removeItem(value);
-	}
-};
-
-ToolbarController.prototype.hasItem = function(value) {
-	var hasItem = false;
-	for(var i = 0; i < this.itemsSelected.length; i++) {
-		if (this.itemsSelected[i] == value) {
-			hasItem = true;
-			i = this.itemsSelected.length;
+	/*
+	* Remove an item value from the keeping track list
+	* @value: must be a number or string
+	*/
+	ToolbarController.prototype.removeItem = function(value) {
+		var type = typeof value;
+		if (!(type == 'number' || type == 'string'))
+			throw 'ToolbarController: cannot remove an item value which type isn\'t string or number';
+		for(var i = 0; i < this.itemsSelected.length; i++) {
+			if (this.itemsSelected[i] == value)
+				this.itemsSelected.splice(i, 1);
 		}
-	}
-	return hasItem;
-};
+	};
 
-/*
-* Execute an action of the toolbar on the list items tracked
-* @param action: an object with these properties: 
-* 	string httpMethod
-* 	string url
-* 	bool ajax
-*/
-ToolbarController.prototype.execute = function(action) {
-	if (!action.ajax) {
+	ToolbarController.prototype.toggleItem = function(value) {
+		if (!this.hasItem(value)) {
+			this.addItem(value);
+		} else {
+			this.removeItem(value);
+		}
+	};
+
+	/*
+	* Check if the given value is tracked
+	* @value: must be a number or string
+	*/
+	ToolbarController.prototype.hasItem = function(value) {
+		var type = typeof value;
+		if (!(type == 'number' || type == 'string'))
+			throw 'ToolbarController: cannot be tracked an item value which type isn\'t string or number';
+		var hasItem = false;
+		for(var i = 0; i < this.itemsSelected.length; i++) {
+			if (this.itemsSelected[i] == value) {
+				hasItem = true;
+				i = this.itemsSelected.length;
+			}
+		}
+		return hasItem;
+	};
+	
+/* ACTIONS EXECUTION */
+
+	/*
+	* Execute an action of the toolbar on the list items tracked
+	* @param action: an object with these properties: 
+	* 	string httpMethod (default to 'post')
+	* 	string url (required)
+	* 	bool ajax
+	*/
+	ToolbarController.prototype.execute = function(action) {
 		var form = this.getForm();
+		if (!action.httpMethod)
+			action.httpMethod = 'post';
+		if (!action.url)
+			throw 'ToolbarController: url is required to execute a submit';
 		form.attr('method', action.httpMethod);
 		form.attr('action', action.url);
 		form.empty();
 		this.populateForm();
 		form.submit();
-	}
-};
+	};
 
-ToolbarController.prototype.getForm = function() {
-	return jQuery("#" + this.name);
-}
-
-ToolbarController.prototype.populateForm = function() {
-	var form = this.getForm();
-	for (var i = 0; i < this.itemsSelected.length; i++) {
-		var hiddenField = '<input type="hidden" name="item[' + i + ']" value="' + this.itemsSelected[i] + '">';
-		form.append(hiddenField);
+	ToolbarController.prototype.getForm = function() {
+		return jQuery("#" + this.name);
 	}
-}
+
+	ToolbarController.prototype.populateForm = function() {
+		var form = this.getForm();
+		for (var i = 0; i < this.itemsSelected.length; i++) {
+			var hiddenField = '<input type="hidden" name="item[' + i + ']" value="' + this.itemsSelected[i] + '">';
+			form.append(hiddenField);
+		}
+	}
